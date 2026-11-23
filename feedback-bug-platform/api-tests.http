@@ -1,0 +1,105 @@
+### API TESTING FILE
+### Use with the "REST Client" extension in VS Code (click "Send Request"),
+### or copy the requests into Postman / Thunder Client.
+### Run the server first: npm run server
+
+@baseUrl = http://localhost:5000/api
+
+### 1. Health check
+GET {{baseUrl}}/health
+
+### 2. Register (the first user becomes admin)
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Admin User",
+  "email": "admin@example.com",
+  "password": "secret123"
+}
+
+### 3. Login  (copy the token from the response and paste it below)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "secret123"
+}
+
+### 4. Submit a bug report like the widget does (PUBLIC - no token needed)
+POST {{baseUrl}}/issues/public
+Content-Type: application/json
+
+{
+  "type": "bug",
+  "title": "Checkout button not working",
+  "description": "When I click the checkout button nothing happens and I see an error in the console.",
+  "reporterName": "Test Visitor",
+  "reporterEmail": "visitor@example.com",
+  "pageInfo": {
+    "url": "https://example.com/cart",
+    "title": "Cart",
+    "userAgent": "Mozilla/5.0 (test)",
+    "screen": "1920x1080",
+    "viewport": "1280x720",
+    "language": "en-US"
+  }
+}
+
+### 5. Submit a similar report (AI should flag it as a duplicate)
+POST {{baseUrl}}/issues/public
+Content-Type: application/json
+
+{
+  "type": "bug",
+  "description": "Checkout button is not working, clicking it does nothing."
+}
+
+### 6. Submit a feature request
+POST {{baseUrl}}/issues/public
+Content-Type: application/json
+
+{
+  "type": "feature",
+  "description": "It would be great to have a dark mode option on the website."
+}
+
+### ---- PROTECTED ROUTES: replace TOKEN with the token from step 3 ----
+
+### 7. Dashboard stats
+GET {{baseUrl}}/issues/stats
+Authorization: Bearer TOKEN
+
+### 8. List issues (with filters)
+GET {{baseUrl}}/issues?status=open&type=bug&sort=votes
+Authorization: Bearer TOKEN
+
+### 9. Team members
+GET {{baseUrl}}/users
+Authorization: Bearer TOKEN
+
+### 10. Get one issue (replace ISSUE_ID)
+GET {{baseUrl}}/issues/ISSUE_ID
+Authorization: Bearer TOKEN
+
+### 11. Update status and assign (replace ISSUE_ID and USER_ID)
+PATCH {{baseUrl}}/issues/ISSUE_ID
+Authorization: Bearer TOKEN
+Content-Type: application/json
+
+{
+  "status": "in-progress",
+  "assignedTo": "USER_ID"
+}
+
+### 12. Vote / un-vote (toggle)
+POST {{baseUrl}}/issues/ISSUE_ID/vote
+Authorization: Bearer TOKEN
+
+### 13. Delete (admin only)
+DELETE {{baseUrl}}/issues/ISSUE_ID
+Authorization: Bearer TOKEN
+
+### 14. Negative test: no token should give 401
+GET {{baseUrl}}/issues

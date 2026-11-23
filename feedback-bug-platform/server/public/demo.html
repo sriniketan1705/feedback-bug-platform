@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo Shop - Widget Test Page</title>
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 0; background: #f3f4f6; color: #111; }
+      header { background: #111827; color: #fff; padding: 16px 24px; }
+      main { max-width: 800px; margin: 24px auto; padding: 0 16px; }
+      .card { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+      button.demo { background: #dc2626; color: #fff; border: 0; padding: 10px 16px; border-radius: 8px; cursor: pointer; }
+      code { background: #e5e7eb; padding: 2px 6px; border-radius: 4px; }
+    </style>
+  </head>
+  <body>
+    <header><h2 style="margin:0">Demo Shop</h2></header>
+    <main>
+      <div class="card">
+        <h3>Test the feedback widget</h3>
+        <p>
+          Click the <b>Feedback</b> button at the bottom-right corner, write a report and send it.
+          Then log in to the dashboard to see it with the screenshot and page details.
+        </p>
+        <p>This page only needs one line of code:</p>
+        <p><code>&lt;script src="/widget.js" defer&gt;&lt;/script&gt;</code></p>
+      </div>
+      <div class="card">
+        <h3>Fake broken feature</h3>
+        <p>Click this button, then report that "the checkout button is not working".</p>
+        <button class="demo" onclick="alert('Oops! Checkout failed (this is a fake bug).')">Checkout</button>
+      </div>
+    </main>
+
+    <!-- THE EMBED CODE -->
+    <script src="/widget.js" defer></script>
+  </body>
+</html>
